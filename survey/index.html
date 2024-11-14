@@ -38,6 +38,16 @@
                 </button>
             </div>
             <form id="feedbackForm" class="space-y-10">
+                <!-- New Name and MR No fields -->
+                <div class="space-y-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                    <input type="text" id="name" name="name" required class="w-full px-4 py-1 border border-gray-300 rounded-md">
+                </div>
+                <div class="space-y-4">
+                    <label for="mrno" class="block text-sm font-medium text-gray-700">MR No</label>
+                    <input type="text" id="mrno" name="mrno" required class="w-full px-4 py-1 border border-gray-300 rounded-md">
+                </div>
+                <!-- Questions Container -->
                 <div id="questionsContainer" class="space-y-4"></div>
                 <button type="submit" id="submitBtn" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Submit Feedback
@@ -108,6 +118,7 @@
             document.getElementById('departmentSelection').classList.remove('hidden');
             answers.length = 0; 
             document.getElementById('questionsContainer').innerHTML = '';
+            document.getElementById('feedbackForm').reset(); 
         }
     
         function displayQuestions() {
@@ -146,8 +157,11 @@
     const questions = translations[selectedDepartment][language];
 
     const formData = {
+        Date: new Date().toLocaleDateString('en-GB') ,
+        Name: document.getElementById('name').value,
+        Mrno: document.getElementById('mrno').value,
         Department: selectedDepartment,
-        Date: new Date().toLocaleDateString('en-GB') 
+
     };
 
     questions.forEach((question, index) => {
