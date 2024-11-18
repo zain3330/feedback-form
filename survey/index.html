@@ -306,16 +306,15 @@
         document.getElementById("feedbackModal").classList.add("flex");
       }
 
+ 
       function closeFeedbackForm() {
-        document.getElementById("feedbackModal").classList.add("hidden");
-        document.getElementById("feedbackModal").classList.remove("flex");
-        document
-          .getElementById("departmentSelection")
-          .classList.remove("hidden");
-        answers.length = 0;
-        document.getElementById("questionsContainer").innerHTML = "";
-        document.getElementById("feedbackForm").reset();
-      }
+  document.getElementById("feedbackModal").classList.add("hidden");
+  document.getElementById("feedbackModal").classList.remove("flex");
+  document.getElementById("languageSelection").classList.remove("hidden");
+  answers.length = 0;
+  document.getElementById("questionsContainer").innerHTML = "";
+  document.getElementById("feedbackForm").reset();
+}
 
       function displayQuestions() {
         const language = isUrdu ? "Urdu" : "English";
