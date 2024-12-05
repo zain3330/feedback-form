@@ -1,424 +1,262 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Department Feedback</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="script.js"></script>
-  </head>
-  <body
-    class="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4"
-  >
-    <div
-      id="departmentSelection"
-      class="flex flex-col items-center justify-center space-y-8"
-    >
-      <h1 class="text-3xl font-bold mb-8">Feedback Location</h1>
-      <div class="grid grid-cols-2 gap-4">
-        <button
-          onclick="openLanguageSelection('Emergency')"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded w-40 h-20 text-lg"
-        >
-          Emergency
-        </button>
-        <button
-          onclick="openLanguageSelection('Pharmacy')"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded w-40 h-20 text-lg"
-        >
-          Pharmacy
-        </button>
-        <button
-          onclick="openLanguageSelection('General')"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded w-40 h-20 text-lg"
-        >
-          General Discharge Counter
-        </button>
-        <button
-          onclick="openLanguageSelection('Private')"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded w-40 h-20 text-lg"
-        >
-          Private Discharge Counter
+<html lang="ur">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>محکمہ فیڈبیک</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body class="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+<div id="departmentSelection" class="flex flex-col items-center justify-center space-y-8">
+  <h1 class="text-3xl font-bold mb-8">فیڈبیک کا مقام</h1>
+  <div class="grid grid-cols-2 gap-4">
+    <button onclick="openFeedbackForm('Emergency')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded w-40 h-20 text-lg">
+      ایمرجنسی
+    </button>
+    <button onclick="openFeedbackForm('Pharmacy')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded w-40 h-20 text-lg">
+      فارمیسی
+    </button>
+    <button onclick="openFeedbackForm('General')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded w-40 h-20 text-lg">
+      جنرل ڈسچارج کاؤنٹر
+    </button>
+    <button onclick="openFeedbackForm('Private')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded w-40 h-20 text-lg">
+      پرائیویٹ ڈسچارج کاؤنٹر
+    </button>
+  </div>
+</div>
+
+<div id="feedbackModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center">
+  <div class="bg-white p-6 rounded-lg w-96 max-h-[80vh] overflow-y-auto">
+    <div class="flex justify-between items-center mb-4">
+      <h2 id="modalTitle" class="text-2xl font-bold"></h2>
+      <button onclick="closeFeedbackForm()" class="text-gray-500 hover:text-gray-700">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <form id="feedbackForm" class="space-y-5">
+      <div id="step1" class="space-y-4">
+        <label for="mrno" class="block text-sm font-medium text-gray-700">ایم آر نمبر</label>
+        <input type="text" id="mrno" name="mrno" required class="w-full px-4 py-1 border border-gray-300 rounded-md" />
+        <button type="button" onclick="nextStep()" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          اگلا
         </button>
       </div>
-    </div>
-
-    <div
-      id="languageSelection"
-      class="hidden flex flex-col items-center justify-center space-y-4"
-    >
-      <h1 class="text-2xl font-bold mb-4">Select Language / زبان منتخب کریں</h1>
-      <button
-        onclick="setLanguage('English')"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        English
-      </button>
-      <button
-        onclick="setLanguage('Urdu')"
-        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-      >
-        اردو
-      </button>
-    </div>
-
-    <div
-      id="feedbackModal"
-      class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center"
-    >
-      <div class="bg-white p-6 rounded-lg w-96 max-h-[80vh] overflow-y-auto">
-        <div class="flex justify-between items-center mb-4">
-          <h2 id="modalTitle" class="text-2xl font-bold"></h2>
-          <button
-            onclick="closeFeedbackForm()"
-            class="text-gray-500 hover:text-gray-700"
-          >
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
-          </button>
+      <div id="step2" class="hidden space-y-4">
+        <div class="space-y-4">
+          <label for="name" class="block text-sm font-medium text-gray-700">نام</label>
+          <input type="text" id="name" name="name" disabled required class="w-full px-4 py-1 border border-gray-300 rounded-md" />
         </div>
-        <form id="feedbackForm" class="space-y-5">
-          <!-- New Name and MR No fields -->
-          <div class="space-y-4">
-            <label for="name" class="block text-sm font-medium text-gray-700"
-              >Name</label
-            >
-            <input
-              type="text"
-              id="name"
-              name="name"
-              required
-              class="w-full px-4 py-1 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div class="space-y-4">
-            <label for="mrno" class="block text-sm font-medium text-gray-700"
-              >MR No</label
-            >
-            <input
-              type="text"
-              id="mrno"
-              name="mrno"
-              required
-              class="w-full px-4 py-1 border border-gray-300 rounded-md"
-            />
-          </div>
-          <!-- Questions Container -->
-          <div id="questionsContainer" class="space-y-4"></div>
-          <button
-            type="submit"
-            id="submitBtn"
-            class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Submit Feedback
-          </button>
-        </form>
+        <div class="space-y-4">
+          <label for="description" class="block text-sm font-medium text-gray-700">تفصیل</label>
+          <textarea id="description" name="description" disabled rows="1" class="w-full px-4 py-1 border border-gray-300 rounded-md"></textarea>
+        </div>
+        <div id="questionsContainer" class="space-y-4"></div>
+        <button type="submit" id="submitBtn" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          فیڈبیک جمع کرائیں
+        </button>
       </div>
-    </div>
+    </form>
+  </div>
+</div>
 
-    <script>
-      let isUrdu = false;
-      let selectedDepartment = "";
-      const answers = [];
+<script>
+  let selectedDepartment = "";
+  const answers = [];
 
-      const translations = {
-        Emergency: {
-          English: [
-            {
-              full: "Are you satisfied with the available services of emergency?",
-              short:
-                "Are you satisfied with the available services of emergency?",
-            },
-            {
-              full: "Are you satisfied with the available services of Pharmacy.",
-              short:
-                "Are you satisfied with the available services of Pharmacy.",
-            },
-          ],
-          Urdu: [
-            {
-              full: "کیا آپ ایمرجنسی کی دستیاب خدمات سے مطمئن ہیں؟",
-              short: "کیا آپ ایمرجنسی کی دستیاب خدمات سے مطمئن ہیں؟",
-            },
-            {
-              full: "کیا آپ فارمیسی کی دستیاب خدمات سے مطمئن ہیں؟",
-              short: "کیا آپ فارمیسی کی دستیاب خدمات سے مطمئن ہیں؟",
-            },
-          ],
-        },
-        Pharmacy: {
-          English: [
-            {
-              full: "Are you satisfied with the available services of emergency?",
-              short:
-                "Are you satisfied with the available services of emergency?",
-            },
-            {
-              full: "Are you satisfied with the available services of Pharmacy.",
-              short:
-                "Are you satisfied with the available services of Pharmacy.",
-            },
-          ],
-          Urdu: [
-            {
-              full: "کیا آپ ایمرجنسی کی دستیاب خدمات سے مطمئن ہیں؟",
-              short: "کیا آپ ایمرجنسی کی دستیاب خدمات سے مطمئن ہیں؟",
-            },
-            {
-              full: "کیا آپ فارمیسی کی دستیاب خدمات سے مطمئن ہیں؟",
-              short: "کیا آپ فارمیسی کی دستیاب خدمات سے مطمئن ہیں؟",
-            },
-          ],
-        },
-        General: {
-          English: [
-            {
-              full: "Are you satisfied with the services/ facilitation provided by Front Desk Officer (FDO) reception staff/Admission office/ patient facilitation officer?",
-              short:
-                "Are you satisfied with the services/ facilitation provided by Front Desk Officer (FDO) reception staff/Admission office/ patient facilitation officer?",
-            },
-            {
-              full: "Are you satisfied with the services of available doctors?",
-              short:
-                "Are you satisfied with the services of available doctors?",
-            },
-            {
-              full: "Are you satisfied with the services of available Nursing Staff?",
-              short:
-                "Are you satisfied with the services of available Nursing Staff?",
-            },
-            {
-              full: "Are you satisfied with the laboratory services of Fatima Memorial Hospital?",
-              short:
-                "Are you satisfied with the laboratory services of Fatima Memorial Hospital?",
-            },
-            {
-              full: "Are you satisfied with the available services of X-Rays/ CT of Fatima Memorial Hospital?",
-              short:
-                "Are you satisfied with the available services of X-Rays/ CT of Fatima Memorial Hospital?",
-            },
-            {
-              full: "Are you satisfied with the facilities of on spot medical treatment/ advices of Fatima Memorial Hospital?",
-              short:
-                "Are you satisfied with the facilities of on spot medical treatment/ advices of Fatima Memorial Hospital?",
-            },
-            {
-              full: "Are you satisfied with the available pharmacy services?",
-              short: "Are you satisfied with the available pharmacy services?",
-            },
-            {
-              full: "Do you come for medical treatment/ advices to Fatima Memorial Hospital next time?",
-              short:
-                "Do you come for medical treatment/ advices to Fatima Memorial Hospital next time?",
-            },
-          ],
-          Urdu: [
-            { full: "آئی ٹی سوال 1؟", short: "سوال ایک" },
-            { full: "آئی ٹی سوال 2؟", short: "سوال دو" },
-            { full: "آئی ٹی سوال 3؟", short: "سوال تین" },
-            { full: "آئی ٹی سوال 4؟", short: "سوال چار" },
-            { full: "آئی ٹی سوال 5؟", short: "سوال پانچ" },
-          ],
-        },
-        Private: {
-          English: [
-            {
-              full: "Are you satisfied with the services/ facilitation provided by Front Desk Officer (FDO) reception staff/Admission office/ patient facilitation officer?",
-              short:
-                "Are you satisfied with the services/ facilitation provided by Front Desk Officer (FDO) reception staff/Admission office/ patient facilitation officer?",
-            },
-            {
-              full: "Are you satisfied with the services of available doctors?",
-              short:
-                "Are you satisfied with the services of available doctors?",
-            },
-            {
-              full: "Are you satisfied with the services of available Nursing Staff?",
-              short:
-                "Are you satisfied with the services of available Nursing Staff?",
-            },
-            {
-              full: "Are you satisfied with the laboratory services of Fatima Memorial Hospital?",
-              short:
-                "Are you satisfied with the laboratory services of Fatima Memorial Hospital?",
-            },
-            {
-              full: "Are you satisfied with the available services of X-Rays/ CT of Fatima Memorial Hospital?",
-              short:
-                "Are you satisfied with the available services of X-Rays/ CT of Fatima Memorial Hospital?",
-            },
-            {
-              full: "Are you satisfied with the facilities of on spot medical treatment/ advices of Fatima Memorial Hospital?",
-              short:
-                "Are you satisfied with the facilities of on spot medical treatment/ advices of Fatima Memorial Hospital?",
-            },
-            {
-              full: "Are you satisfied with the available pharmacy services?",
-              short: "Are you satisfied with the available pharmacy services?",
-            },
-            {
-              full: "Do you come for medical treatment/ advices to Fatima Memorial Hospital next time?",
-              short:
-                "Do you come for medical treatment/ advices to Fatima Memorial Hospital next time?",
-            },
-          ],
-          Urdu: [
-            { full: "آئی ٹی سوال 1؟", short: "سوال ایک" },
-            { full: "آئی ٹی سوال 2؟", short: "سوال دو" },
-            { full: "آئی ٹی سوال 3؟", short: "سوال تین" },
-            { full: "آئی ٹی سوال 4؟", short: "سوال چار" },
-            { full: "آئی ٹی سوال 5؟", short: "سوال پانچ" },
-          ],
-        },
+  const translations = {
+    Emergency: [
+      { full: "کیا آپ ایمرجنسی کی دستیاب خدمات سے مطمئن ہیں؟", short: "کیا آپ ایمرجنسی کی دستیاب خدمات سے مطمئن ہیں؟" },
+      { full: "کیا آپ فارمیسی کی دستیاب خدمات سے مطمئن ہیں؟", short: "کیا آپ فارمیسی کی دستیاب خدمات سے مطمئن ہیں؟" },
+    ],
+    Pharmacy: [
+      { full: "کیا آپ ایمرجنسی کی دستیاب خدمات سے مطمئن ہیں؟", short: "کیا آپ ایمرجنسی کی دستیاب خدمات سے مطمئن ہیں؟" },
+      { full: "کیا آپ فارمیسی کی دستیاب خدمات سے مطمئن ہیں؟", short: "کیا آپ فارمیسی کی دستیاب خدمات سے مطمئن ہیں؟" },
+    ],
+    General: [
+      { full: "آئی ٹی سوال 1؟", short: "سوال ایک" },
+      { full: "آئی ٹی سوال 2؟", short: "سوال دو" },
+      { full: "آئی ٹی سوال 3؟", short: "سوال تین" },
+      { full: "آئی ٹی سوال 4؟", short: "سوال چار" },
+      { full: "آئی ٹی سوال 5؟", short: "سوال پانچ" },
+    ],
+    Private: [
+      { full: "آئی ٹی سوال 1؟", short: "سوال ایک" },
+      { full: "آئی ٹی سوال 2؟", short: "سوال دو" },
+      { full: "آئی ٹی سوال 3؟", short: "سوال تین" },
+      { full: "آئی ٹی سوال 4؟", short: "سوال چار" },
+      { full: "آئی ٹی سوال 5؟", short: "سوال پانچ" },
+    ],
+  };
+
+  function openFeedbackForm(department) {
+    selectedDepartment = department;
+    document.getElementById("departmentSelection").classList.add("hidden");
+    document.getElementById("modalTitle").textContent = `${selectedDepartment} فیڈبیک`;
+    document.getElementById("feedbackModal").classList.remove("hidden");
+    document.getElementById("feedbackModal").classList.add("flex");
+    document.getElementById("step1").classList.remove("hidden");
+    document.getElementById("step2").classList.add("hidden");
+  }
+
+  function closeFeedbackForm() {
+    document.getElementById("feedbackModal").classList.add("hidden");
+    document.getElementById("feedbackModal").classList.remove("flex");
+    document.getElementById("departmentSelection").classList.remove("hidden");
+    resetForm();
+  }
+
+  function resetForm() {
+    answers.length = 0;
+    document.getElementById("questionsContainer").innerHTML = "";
+    document.getElementById("feedbackForm").reset();
+    document.getElementById("step1").classList.remove("hidden");
+    document.getElementById("step2").classList.add("hidden");
+  }
+
+  async function nextStep() {
+    const mrno = document.getElementById('mrno').value;
+    if (mrno) {
+      const apiUrl = 'https://prod-55.northeurope.logic.azure.com:443/workflows/303d96d64b9846488fa2b853a0bdc1f0/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=AsR_g4T29vIVFZKvl8FGt7m6gzEQerH-HLoudp_MuOo';
+
+      const requestBody = {
+        mrno: mrno
       };
 
-      function openLanguageSelection(department) {
-        selectedDepartment = department;
-        document.getElementById("departmentSelection").classList.add("hidden");
-        document.getElementById("languageSelection").classList.remove("hidden");
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+        });
+
+        if (!response.ok) throw new Error('Network response was not ok');
+
+        const data = await response.json();
+        console.log(data);
+
+        if (Array.isArray(data) && data.length > 0) {
+          // Access the first item in the array
+          const firstItem = data[0];
+
+          document.getElementById('name').value = firstItem.ATTENDANT_NAME || '';
+          document.getElementById('description').value = firstItem.DESCRIPTION || '';
+
+          // Switch steps
+          document.getElementById('step1').classList.add('hidden');
+          document.getElementById('step2').classList.remove('hidden');
+
+          // Call the function to display questions (if required)
+          displayQuestions();
+        } else {
+          swal("خطا!", "کوئی ڈیٹا دستیاب نہیں۔ براہ کرم درست معلومات فراہم کریں۔", "error");
+        }
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+        swal("خطا!", "معلومات حاصل کرنے میں مسئلہ ہوا۔ براہ کرم دوبارہ کوشش کریں۔", "error");
       }
+    }
+  }
 
-      function setLanguage(language) {
-        isUrdu = language === "Urdu";
-        document.getElementById("modalTitle").textContent = isUrdu
-          ? `${selectedDepartment} فیڈبیک`
-          : `${selectedDepartment} Feedback`;
-        document.getElementById("languageSelection").classList.add("hidden");
-        displayQuestions();
-        document.getElementById("feedbackModal").classList.remove("hidden");
-        document.getElementById("feedbackModal").classList.add("flex");
-      }
+  function displayQuestions() {
+    const questions = translations[selectedDepartment];
+    const questionsContainer = document.getElementById("questionsContainer");
+    questionsContainer.innerHTML = "";
 
- 
-      function closeFeedbackForm() {
-  document.getElementById("feedbackModal").classList.add("hidden");
-  document.getElementById("feedbackModal").classList.remove("flex");
-  document.getElementById("languageSelection").classList.remove("hidden");
-  answers.length = 0;
-  document.getElementById("questionsContainer").innerHTML = "";
-  document.getElementById("feedbackForm").reset();
-}
+    answers.length = questions.length;
 
-      function displayQuestions() {
-        const language = isUrdu ? "Urdu" : "English";
-        const questions = translations[selectedDepartment][language];
-        const questionsContainer =
-          document.getElementById("questionsContainer");
-        questionsContainer.innerHTML = "";
-
-        answers.length = questions.length;
-
-        questions.forEach((questionObj, index) => {
-          const questionDiv = document.createElement("div");
-          questionDiv.classList.add("space-y-2");
-          questionDiv.innerHTML = `
+    questions.forEach((questionObj, index) => {
+      const questionDiv = document.createElement("div");
+      questionDiv.classList.add("space-y-2");
+      questionDiv.innerHTML = `
                     <p class="font-medium">${questionObj.full}</p>
                     <div class="flex justify-center space-x-4">
                         <button type="button" class="text-4xl hover:scale-110 transition-transform" onclick="selectEmoji(this, ${index}, true)">😊</button>
                         <button type="button" class="text-4xl hover:scale-110 transition-transform" onclick="selectEmoji(this, ${index}, false)">😡</button>
                     </div>
                 `;
-          questionsContainer.appendChild(questionDiv);
-        });
+      questionsContainer.appendChild(questionDiv);
+    });
+  }
+
+  function selectEmoji(button, questionIndex, isSatisfied) {
+    const parent = button.parentElement;
+    parent.querySelectorAll("button").forEach((btn) => btn.classList.remove("ring-2", "ring-blue-500"));
+    button.classList.add("ring-2", "ring-blue-500");
+    answers[questionIndex] = isSatisfied ? "satisfied" : "dissatisfied";
+  }
+
+  document.getElementById("feedbackForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const questions = translations[selectedDepartment];
+
+    const formData = {
+      Date: new Date().toLocaleDateString("en-GB"),
+      Mrno: document.getElementById("mrno").value,
+      Name: document.getElementById("name").value,
+      Description: document.getElementById("description").value,
+      Department: selectedDepartment,
+    };
+
+    questions.forEach((question, index) => {
+      if (answers[index] !== undefined) {
+        formData[`Question${index + 1}`] = `${question.short}: ${answers[index]}`;
       }
+    });
 
-      function selectEmoji(button, questionIndex, isSatisfied) {
-        const parent = button.parentElement;
-        parent
-          .querySelectorAll("button")
-          .forEach((btn) => btn.classList.remove("ring-2", "ring-blue-500"));
-        button.classList.add("ring-2", "ring-blue-500");
-        answers[questionIndex] = isSatisfied ? "satisfied" : "dissatisfied";
-      }
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbwUttKMycXo084bSf29DuNdMuGXO7zLIsNO0FMGxKSXGkLkafgECgd7CcN4zJ7e2FyojA/exec";
 
-      document
-        .getElementById("feedbackForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
+    swal({
+      title: "جمع کر رہا ہے...",
+      text: "براہ کرم انتظار کریں جب تک ہم آپ کی فیڈبیک جمع کر رہے ہیں۔",
+      icon: "info",
+      buttons: false,
+      closeOnClickOutside: false,
+      closeOnEsc: false,
+    });
 
-          const language = isUrdu ? "Urdu" : "English";
-          const questions = translations[selectedDepartment][language];
-
-          const formData = {
-            Date: new Date().toLocaleDateString("en-GB"),
-            Name: document.getElementById("name").value,
-            Mrno: document.getElementById("mrno").value,
-            Department: selectedDepartment,
-          };
-
-          questions.forEach((question, index) => {
-            if (answers[index] !== undefined) {
-              formData[
-                `Question${index + 1}`
-              ] = `${question.short}: ${answers[index]}`;
-            }
-          });
-
-          const webAppUrl =
-            "https://script.google.com/macros/s/AKfycbwUttKMycXo084bSf29DuNdMuGXO7zLIsNO0FMGxKSXGkLkafgECgd7CcN4zJ7e2FyojA/exec";
-
-          // Show loading alert
-          swal({
-            title: "Submitting...",
-            text: "Please wait while we submit your feedback.",
-            icon: "info",
-            buttons: false,
-            closeOnClickOutside: false,
-            closeOnEsc: false,
-          });
-
-          fetch(webAppUrl, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: new URLSearchParams(formData),
-            mode: "cors",
-          })
+    fetch(webAppUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams(formData),
+      mode: "cors",
+    })
             .then((response) => response.json())
             .then((data) => {
               if (data.result === "success") {
                 swal(
-                  "Thank you!",
-                  "Your feedback has been submitted successfully.",
-                  "success"
-                );
-                closeFeedbackForm();
+                        "شکریہ!",
+                        "آپ کی فیڈبیک کامیابی سے جمع کر لی گئی ہے۔",
+                        "success"
+                ).then(() => {
+                  resetForm();
+                });
               } else {
                 console.error("Error inserting data:", data.error);
                 swal(
-                  "Oops!",
-                  "There was an error submitting your feedback. Please try again.",
-                  "error"
+                        "افسوس!",
+                        "آپ کی فیڈبیک جمع کرنے میں ایک خرابی پیش آئی۔ براہ کرم دوبارہ کوشش کریں۔",
+                        "error"
                 );
               }
             })
             .catch((error) => {
-              console.error("Fetch error:", error);
+              consoleerror("Fetch error:", error);
               swal(
-                "Oops!",
-                "There was an error submitting your feedback. Please try again.",
-                "error"
+                      "افسوس!",
+                      "آپ کی فیڈبیک جمع کرنے میں ایک خرابی پیش آئی۔ براہ کرم دوبارہ کوشش کریں۔",
+                      "error"
               );
             });
-        });
-    </script>
-  </body>
+  });
+</script>
+</body>
 </html>
