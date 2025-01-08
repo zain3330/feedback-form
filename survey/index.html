@@ -87,6 +87,7 @@
               type="text"
               id="mrno"
               name="mrno"
+              autocomplete="off"
               required
               class="w-full px-4 py-1 border border-gray-300 rounded-md"
             />
@@ -291,8 +292,10 @@
         document.getElementById("step2").classList.add("hidden");
       }
 
+
       async function nextStep() {
-        const mrno = document.getElementById("mrno").value;
+        let mrno = document.getElementById("mrno").value;
+        mrno = formatMRNo(mrno);
         if (mrno) {
           const apiUrl =
             "https://prod-55.northeurope.logic.azure.com:443/workflows/303d96d64b9846488fa2b853a0bdc1f0/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=AsR_g4T29vIVFZKvl8FGt7m6gzEQerH-HLoudp_MuOo";
@@ -349,7 +352,18 @@
           }
         }
       }
-
+      function formatMRNo(value) {
+        if (value.length === 6) {
+          return "10100000" + value;
+        } else if (value.length === 4) {
+          return "1006000000" + value;
+        } else if (value.length === 3) {
+          return "10060000000" + value;
+        } else if (value.length === 2) {
+          return "100600000000" + value;
+        }
+        return value;
+      }
       function displayQuestions() {
         const questions = translations[selectedDepartment];
         const questionsContainer =
