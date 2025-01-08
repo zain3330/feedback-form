@@ -89,6 +89,7 @@
               name="mrno"
               autocomplete="off"
               required
+              onkeydown="handleEnter(event)"
               class="w-full px-4 py-1 border border-gray-300 rounded-md"
             />
             <button
@@ -394,6 +395,12 @@
                 `;
           questionsContainer.appendChild(questionDiv);
         });
+      }
+      function handleEnter(event) {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          nextStep();
+        }
       }
 
       function selectEmoji(button, questionIndex, isSatisfied) {
